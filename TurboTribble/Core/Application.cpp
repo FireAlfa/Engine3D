@@ -83,7 +83,7 @@ bool Application::Init()
 	LoadEngineConfig();
 
 	// After all Init calls we call Start() in all modules
-	TTLOG("Application Start --------------");
+	TTLOG("++++++++ Application Start ++++++++");
 	for (size_t i = 0; i < modules.size() && ret == true; i++)
 	{
 		ret = modules[i]->Start();
@@ -105,7 +105,7 @@ void Application::LoadEngineConfig()
 		rapidjson::Document document;
 		if (document.Parse<rapidjson::kParseStopWhenDoneFlag>(buffer).HasParseError())
 		{
-			TTLOG("Error loading engine config");
+			TTLOG("######## Error loading engine config ########");
 		}
 		else
 		{
@@ -116,7 +116,7 @@ void Application::LoadEngineConfig()
 				modules[i]->OnLoad(config);
 			}
 
-			TTLOG("Engine config loaded");
+			TTLOG("++++++++ Engine config loaded ++++++++");
 		}
 	}
 	RELEASE_ARRAY(buffer);
@@ -226,11 +226,11 @@ void Application::SaveEngineConfig()
 
 	if (fileSystem->Save("engineConfig.cfg", sb.GetString(), strlen(sb.GetString()), false))
 	{
-		TTLOG("Engine configuration saved.");
+		TTLOG("++++++++ Engine configuration saved. ++++++++");
 	}
 	else
 	{
-		TTLOG("Engine configuration not saved.");
+		TTLOG("######## Engine configuration not saved. ########");
 	}
 }
 

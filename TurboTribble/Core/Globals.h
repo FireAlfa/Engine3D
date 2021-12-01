@@ -11,9 +11,9 @@
 #include <stdio.h>
 
 
+// JSON defines
 #define LOAD_JSON_BOOL(b) { b = config.HasMember(#b) ? config[#b].GetBool() : b; }
 #define SAVE_JSON_BOOL(b) { writer.String(#b); writer.Bool(b); }
-
 #define LOAD_JSON_FLOAT(b) { b = config.HasMember(#b) ? config[#b].GetFloat() : b; }
 #define SAVE_JSON_FLOAT(b) { writer.String(#b); writer.Double(b); }
 

@@ -3,13 +3,12 @@
 
 #include <vector>
 
-//#include "Globals.h"
 #include "Timer.h"
 #include "PerfTimer.h"
 
 
 
-// Forward declarations
+// ----- Forward declarations -----
 
 class Module;
 class ModuleWindow;
@@ -22,10 +21,13 @@ class ModuleViewportFrameBuffer;
 class ModuleImport;
 class ModuleFileSystem;
 class ModuleTextures;
+// --------------------------------
 
 class Application
 {
 public:
+
+	// ----- Modules -----
 
 	ModuleWindow* window { nullptr };
 	ModuleInput* input { nullptr };
@@ -37,55 +39,86 @@ public:
 	ModuleImport* import { nullptr };
 	ModuleFileSystem* fileSystem { nullptr };
 	ModuleTextures* textures { nullptr };
+	// -------------------
 
+public:
+
+	// Application Constructor
 	Application();
+	// Application Destructor
 	~Application();
 
+	// Initialization of the Application, this calls all Modules' Init() and Start()
 	bool Init();
-	void LoadEngineConfig();
+	// Call PreUpdate(), Update() and PostUpdate() of all Modules
 	UpdateStatus Update();
+	// Call CleanUp() of all Modules
 	bool CleanUp();
 
-
-	void SaveEngineConfig();
-
-	void DrawFPSDiagram();
-	void DrawHardwareConsole();
-
-
-	void AddModule(Module* mod);
-	void PrepareUpdate();
-	void FinishUpdate();
-
+	// Call OnGui() of all Modules and Draws Config Diagrams
 	void OnGui();
 
+private: 
 
-	// FPS core
-	float				fps;
-	float				dt;
-	int					cap;
-	PerfTimer			ptimer;
-	Timer				msTimer;
-	Timer				frameTime;
-	uint64				frameCount = 0;
-	Timer				startupTime;
-	Timer				lastSecFrameTime;
-	uint32				lastSecFrameCount = 0;
-	uint32				prevLastSecFrameCount = 0;
+	// Add a module to the list
+	void AddModule(Module* mod);
+
+	// FPS Control on Frame Start
+	void PrepareUpdate();
+	// FPS Control on Frame End
+	void FinishUpdate();
+
+	// Load config
+	void LoadEngineConfig();
+	// Save config
+	void SaveEngineConfig();
+
+	// GUI FPS Diagram
+	void DrawFPSDiagram();
+	// GUI Hardware
+	void DrawHardwareConsole();
+
+public:
+
+	// ----- Engine configuration -----
 	
-
-	std::vector<float> fpsLog;
-	std::vector<float> msLog;
-
-	//Engine configuration
 	bool closeEngine;
 	bool vsync;
+	// --------------------------------
+	
 
-
+	// ----- FPS Count -----
+	float fps;
 
 private:
 
+	// ----- FPS variables -----
+	
+	float dt;
+	int cap;
+	PerfTimer ptimer;
+	Timer msTimer;
+	Timer frameTime;
+	uint64 frameCount = 0;
+	Timer startupTime;
+	Timer lastSecFrameTime;
+	uint32 lastSecFrameCount = 0;
+	uint32 prevLastSecFrameCount = 0;
+	// -------------------------
+	
+
+	// ----- FPS & MS Grapic -----
+	
+	std::vector<float> fpsLog;
+	std::vector<float> msLog;
+	// ---------------------------
+
+private:
+
+	// ----- Modules vector -----
+	
 	std::vector<Module*> modules;
+	// --------------------------
 
 };
 
