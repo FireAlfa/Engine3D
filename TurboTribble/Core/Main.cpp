@@ -6,6 +6,8 @@
 #pragma comment( lib, "SDL2.lib" )
 #pragma comment( lib, "SDL2main.lib" )
 
+
+
 enum class MainStates
 {
 	MAIN_CREATION,
@@ -15,13 +17,15 @@ enum class MainStates
 	MAIN_EXIT
 };
 
+Application* app = NULL;
+
 int main(int argc, char** argv)
 {
 	TTLOG("~~~~~~~~~~ Starting %s Engine ~~~~~~~~~~", TITLE);
 
 	int mainReturn = EXIT_FAILURE;
 	MainStates state = MainStates::MAIN_CREATION;
-	Application* app = NULL;
+	
 
 	while (state != MainStates::MAIN_EXIT)
 	{
@@ -55,15 +59,15 @@ int main(int argc, char** argv)
 
 		case MainStates::MAIN_UPDATE:
 		{
-			UpdateStatus update_return = app->Update();
+			UpdateStatus updateReturn = app->Update();
 
-			if (update_return == UpdateStatus::UPDATE_ERROR)
+			if (updateReturn == UpdateStatus::UPDATE_ERROR)
 			{
 				TTLOG("######## Application Update exits with ERROR ########");
 				state = MainStates::MAIN_EXIT;
 			}
 
-			if (update_return == UpdateStatus::UPDATE_STOP)
+			if (updateReturn == UpdateStatus::UPDATE_STOP)
 				state = MainStates::MAIN_FINISH;
 
 			break;
@@ -87,7 +91,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	delete app;
 	TTLOG("~~~~~~~~~~ Exiting %s Engine ~~~~~~~~~~\n", TITLE);
+	delete app;
 	return mainReturn;
 }

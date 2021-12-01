@@ -83,7 +83,7 @@ public:
 
 
 
-private: 
+private:
 
 	std::vector<Module*> modules;
 
