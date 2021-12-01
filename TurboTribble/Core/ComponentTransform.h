@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __COMPONENT_TRANSFORM_H__
+#define __COMPONENT_TRANSFORM_H__
 
 #include "Component.h"
 
@@ -51,3 +52,5 @@ private:
 	float3 right = float3::unitX;
 
 };
+
+#endif // !__COMPONENT_TRANSFORM_H__

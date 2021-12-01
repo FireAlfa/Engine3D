@@ -55,7 +55,7 @@ public:
 	void AboutWindow();	// Can be done better
 	void InspectorGameObject();
 
-	//Window status control
+	// Window status control
 	bool showDemoWindow;
 	bool showAnotherWindow;
 	bool showAboutWindow;

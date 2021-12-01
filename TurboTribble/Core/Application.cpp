@@ -50,7 +50,7 @@ Application::Application()
 	// Renderer last!
 	AddModule(renderer3D);
 
-	//Control variable to close app
+	// Control variable to close app
 	closeEngine = false;
 	vsync = false;
 	fps = 0.0f;
@@ -146,7 +146,7 @@ void Application::FinishUpdate()
 		lastSecFrameCount = 0;
 	}
 
-	uint32 last_frame_ms = frameTime.Read();
+	uint32 lastFrameMS = frameTime.Read();
 
 }
 

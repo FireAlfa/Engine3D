@@ -497,15 +497,15 @@ void ModuleEditor::UpdateWindowStatus() {
         {
             app->scene->CreateGameObject();
         }
-        std::stack<GameObject*> S;
+        std::stack<GameObject*> s;
         std::stack<uint> indents;
-        S.push(app->scene->root);
+        s.push(app->scene->root);
         indents.push(0);
-        while (!S.empty())
+        while (!s.empty())
         {
-            GameObject* go = S.top();
+            GameObject* go = s.top();
             uint indentsAmount = indents.top();
-            S.pop();
+            s.pop();
             indents.pop();
 
             ImGuiTreeNodeFlags nodeFlags = 0;
@@ -557,7 +557,7 @@ void ModuleEditor::UpdateWindowStatus() {
                 }
                 for (GameObject* child : go->children)
                 {
-                    S.push(child);
+                    s.push(child);
                     indents.push(indentsAmount + 1);
                 }
 

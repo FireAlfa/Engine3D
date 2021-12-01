@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __COMPONENT_MESH_H__
+#define __COMPONENT_MESH_H__
+
 #include "Component.h"
 
 #include "Globals.h"
@@ -69,3 +71,5 @@ private:
 	AABB localAABB;
 
 };
+
+#endif // !__COMPONENT_MESH_H__

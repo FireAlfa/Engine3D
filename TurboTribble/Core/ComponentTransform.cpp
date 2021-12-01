@@ -1,7 +1,7 @@
 #include "ComponentTransform.h"
-#include "GameObject.h"
-#include "Application.h"
 
+#include "Application.h"
+#include "GameObject.h"
 #include "ModuleScene.h"
 
 #include "Math/TransformOps.h"

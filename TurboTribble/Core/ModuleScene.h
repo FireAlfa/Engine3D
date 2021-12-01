@@ -27,5 +27,4 @@ public:
 	GameObject* root;
 };
 
-
 #endif // !__MODULE_SCENE_H__

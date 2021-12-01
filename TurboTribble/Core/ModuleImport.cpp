@@ -47,7 +47,7 @@ bool ModuleImport::LoadGeometry(const char* path) {
 
 	// Own structure	
 	GameObject* root = nullptr;
-	std::string new_root_name(path);
+	std::string newRootName(path);
 
 	// Assimp stuff
 	aiMesh* assimpMesh = nullptr;

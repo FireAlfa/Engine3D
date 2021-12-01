@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __GAMEOBJECT_H__
+#define __GAMEOBJECT_H__
 
 #include <vector>
 #include <string>
@@ -28,7 +29,7 @@ public:
 
 	template<class T> T* GetComponent()
 	{
-		T* component = nullptr; 
+		T* component = nullptr;
 		for (Component* c : components)
 		{
 			component = dynamic_cast<T*>(c);
@@ -55,3 +56,4 @@ public:
 
 };
 
+#endif // !__GAMEOBJECT_H__
