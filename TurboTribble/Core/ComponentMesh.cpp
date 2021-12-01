@@ -1,12 +1,13 @@
 #include "ComponentMesh.h"
 
-#include "glew.h"
-#include "SDL/include/SDL_opengl.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
 #include "GameObject.h"
+
+#include "glew.h"
+#include "SDL/include/SDL_opengl.h"
 #include "ImGui/imgui.h"
 #include "Geometry/Sphere.h"
 #include "par_shapes.h"
@@ -67,19 +68,19 @@ void ComponentMesh::CopyParMesh(par_shapes_mesh* parMesh)
 
 void ComponentMesh::GenerateBuffers() {
 	
-	// Generate Vertex
+	//-- Generate Vertex
 	vertexBufferId = 0;
 	glGenBuffers(1, &vertexBufferId);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * numVertices, &vertices[0], GL_STATIC_DRAW);
 
-	// Generate Index
+	//-- Generate Index
 	indexBufferId = 0;
 	glGenBuffers(1, &indexBufferId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * numIndices, &indices[0], GL_STATIC_DRAW);
 
-	// Generate Texture_Buffers
+	//-- Generate Texture_Buffers
 	if (texCoords.size() != 0)
 	{
 		textureBufferId = 0;
@@ -88,7 +89,7 @@ void ComponentMesh::GenerateBuffers() {
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float2) * texCoords.size(), &texCoords[0], GL_STATIC_DRAW);
 	}
 	if (vertexBufferId == 0 || indexBufferId == 0)
-		LOG("Error creating mesh on gameobject %s", owner->name.c_str());
+		TTLOG("Error creating mesh on gameobject %s", owner->name.c_str());
 }
 
 void ComponentMesh::ComputeNormals()
@@ -166,6 +167,7 @@ bool ComponentMesh::Update(float dt)
 {
 
 	drawWireframe || app->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		//app->renderer3D->wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -223,3 +225,5 @@ void ComponentMesh::OnGui()
 		ImGui::Checkbox("Draw vertex normals", &drawVertexNormals);
 	}
 }
+
+

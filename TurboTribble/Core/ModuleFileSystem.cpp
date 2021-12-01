@@ -1,20 +1,23 @@
-#include "Globals.h"
-#include "Application.h"
 #include "ModuleFileSystem.h"
+
+#include "Application.h"
 #include "PathNode.h"
+
+#include "Globals.h"
 
 #include "PhysFS/include/physfs.h"
 #include <fstream>
 #include <filesystem>
-
 #include "Assimp/include/cfileio.h"
 #include "Assimp/include/types.h"
 
 #pragma comment( lib, "Core/External/PhysFS/libx86/physfs.lib" )
 
+
+
 ModuleFileSystem::ModuleFileSystem(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
-	// needs to be created before Init so other modules can use it
+	// Needs to be created before Init so other modules can use it
 	char* basePath = SDL_GetBasePath();
 	systemBasePath = std::string(basePath);
 	PHYSFS_init(nullptr);
@@ -35,14 +38,14 @@ ModuleFileSystem::~ModuleFileSystem()
 // Called before render is available
 bool ModuleFileSystem::Init()
 {
-	LOG("Loading File System");
+	TTLOG("Loading File System");
 	bool ret = true;
 	
 	// Setting the working directory as the writing directory
-	if (PHYSFS_setWriteDir(".") == 0) { LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError()); }
+	if (PHYSFS_setWriteDir(".") == 0) { TTLOG("File System error while creating write dir: %s\n", PHYSFS_getLastError()); }
 	if (PHYSFS_init(nullptr) == 0) {
 
-		LOG("PhysFS succesfully loaded | Libs initialized");
+		TTLOG("PhysFS succesfully loaded | Libs initialized");
 
 	}
 
@@ -55,7 +58,7 @@ bool ModuleFileSystem::Init()
 // Called before quitting
 bool ModuleFileSystem::CleanUp()
 {
-	LOG("Freeing File System subsystem");
+	TTLOG("Freeing File System subsystem");
 
 	return true;
 }
@@ -66,12 +69,12 @@ bool ModuleFileSystem::Read(const std::string& path, void* data, unsigned size) 
 	PHYSFS_ErrorCode errorCode = PHYSFS_getLastErrorCode();
 	if (errorCode == PHYSFS_ERR_BAD_FILENAME) // possibly it's from outside the filesystem -> read as C
 	{
-		LOG("Reading outside filesystem.");
+		TTLOG("Reading outside filesystem.");
 		FILE* file = nullptr;
 		fopen_s(&file, path.c_str(), "rb");
 		if (file == nullptr)
 		{
-			LOG("Impossible to read %s", path.c_str());
+			TTLOG("Impossible to read %s", path.c_str());
 			return 0;
 		}
 		fread_s(data, size, 1, size, file);
@@ -82,7 +85,7 @@ bool ModuleFileSystem::Read(const std::string& path, void* data, unsigned size) 
 	{
 		if (file == nullptr)
 		{
-			LOG("Error reading %s -> %s", path.c_str(), PHYSFS_getErrorByCode(errorCode));
+			TTLOG("Error reading %s -> %s", path.c_str(), PHYSFS_getErrorByCode(errorCode));
 			return false;
 		}
 
@@ -107,12 +110,12 @@ unsigned ModuleFileSystem::Size(const std::string& path) const
 	PHYSFS_ErrorCode errorCode = PHYSFS_getLastErrorCode();
 	if (errorCode == PHYSFS_ERR_BAD_FILENAME) // possibly it's from outside the filesystem -> read as C
 	{
-		LOG("Reading outside filesystem.");
+		TTLOG("Reading outside filesystem.");
 		FILE* file = nullptr;
 		fopen_s(&file, path.c_str(), "rb");
 		if (file == nullptr)
 		{
-			LOG("Impossible to read %s", path.c_str());
+			TTLOG("Impossible to read %s", path.c_str());
 			return 0;
 		}
 		fseek(file, 0L, SEEK_END);
@@ -120,7 +123,7 @@ unsigned ModuleFileSystem::Size(const std::string& path) const
 	}
 	if (file == nullptr)
 	{
-		LOG("Error reading %s -> %s", path.c_str(), PHYSFS_getErrorByCode(errorCode));
+		TTLOG("Error reading %s -> %s", path.c_str(), PHYSFS_getErrorByCode(errorCode));
 		return 0;
 	}
 	return PHYSFS_fileLength(file);
@@ -138,7 +141,7 @@ bool ModuleFileSystem::AddPath(const char* pathOrZip)
 	bool ret = false;
 
 	if (PHYSFS_mount(pathOrZip, nullptr, 1) == 0)
-		LOG("File System error while adding a path or zip: %s\n", PHYSFS_getLastError())
+		TTLOG("File System error while adding a path or zip: %s\n", PHYSFS_getLastError())
 	else
 		ret = true;
 
@@ -318,29 +321,29 @@ void ModuleFileSystem::SplitFilePath(const char * fullPath, std::string * path, 
 	if (fullPath != nullptr)
 	{
 		std::string full(fullPath);
-		size_t posSeparator = full.find_last_of("\\/");
-		size_t posDot = full.find_last_of(".");
+		size_t pos_separator = full.find_last_of("\\/");
+		size_t pos_dot = full.find_last_of(".");
 
 		if (path != nullptr)
 		{
-			if (posSeparator < full.length())
-				*path = full.substr(0, posSeparator + 1);
+			if (pos_separator < full.length())
+				*path = full.substr(0, pos_separator + 1);
 			else
 				path->clear();
 		}
 
 		if (file != nullptr)
 		{
-			if (posSeparator < full.length())
-				*file = full.substr(posSeparator + 1, posDot - posSeparator - 1);
+			if (pos_separator < full.length())
+				*file = full.substr(pos_separator + 1, pos_dot - pos_separator - 1);
 			else
-				*file = full.substr(0, posDot);
+				*file = full.substr(0, pos_dot);
 		}
 
 		if (extension != nullptr)
 		{
-			if (posDot < full.length())
-				*extension = full.substr(posDot + 1);
+			if (pos_dot < full.length())
+				*extension = full.substr(pos_dot + 1);
 			else
 				extension->clear();
 		}
@@ -349,9 +352,9 @@ void ModuleFileSystem::SplitFilePath(const char * fullPath, std::string * path, 
 
 unsigned int ModuleFileSystem::Load(const char * path, const char * file, char ** buffer) const
 {
-	std::string fullPath(path);
-	fullPath += file;
-	return Load(fullPath.c_str(), buffer);
+	std::string full_path(path);
+	full_path += file;
+	return Load(full_path.c_str(), buffer);
 }
 
 // Read a whole file and put it in a new buffer
@@ -359,19 +362,19 @@ uint ModuleFileSystem::Load(const char* file, char** buffer) const
 {
 	uint ret = 0;
 
-	PHYSFS_file* fsFile = PHYSFS_openRead(file);
+	PHYSFS_file* fs_file = PHYSFS_openRead(file);
 
-	if (fsFile != nullptr)
+	if (fs_file != nullptr)
 	{
-		PHYSFS_sint32 size = (PHYSFS_sint32)PHYSFS_fileLength(fsFile);
+		PHYSFS_sint32 size = (PHYSFS_sint32)PHYSFS_fileLength(fs_file);
 
 		if (size > 0)
 		{
 			*buffer = new char[size+1];
-			uint readed = (uint)PHYSFS_read(fsFile, *buffer, 1, size);
+			uint readed = (uint)PHYSFS_read(fs_file, *buffer, 1, size);
 			if (readed != size)
 			{
-				LOG("File System error while reading from file %s: %s\n", file, PHYSFS_getLastError());
+				TTLOG("File System error while reading from file %s: %s\n", file, PHYSFS_getLastError());
 				RELEASE_ARRAY(buffer);
 			}
 			else
@@ -382,11 +385,11 @@ uint ModuleFileSystem::Load(const char* file, char** buffer) const
 			}
 		}
 
-		if (PHYSFS_close(fsFile) == 0)
-			LOG("File System error while closing file %s: %s\n", file, PHYSFS_getLastError());
+		if (PHYSFS_close(fs_file) == 0)
+			TTLOG("File System error while closing file %s: %s\n", file, PHYSFS_getLastError());
 	}
 	else
-		LOG("File System error while opening file %s: %s\n", file, PHYSFS_getLastError());
+		TTLOG("File System error while opening file %s: %s\n", file, PHYSFS_getLastError());
 
 	return ret;
 }
@@ -419,17 +422,17 @@ bool ModuleFileSystem::DuplicateFile(const char* srcFile, const char* dstFile)
 
 	if (srcOpen && dstOpen)
 	{
-		LOG("[success] File Duplicated Correctly");
+		TTLOG("[success] File Duplicated Correctly");
 		return true;
 	}
 	else
 	{
-		LOG("[error] File could not be duplicated");
+		TTLOG("[error] File could not be duplicated");
 		return false;
 	}
 }
 
-int close_sdl_rwops(SDL_RWops *rw)
+int closeSDLRWops(SDL_RWops *rw)
 {
 	RELEASE_ARRAY(rw->hidden.mem.base);
 	SDL_FreeRW(rw);
@@ -449,20 +452,20 @@ uint ModuleFileSystem::Save(const char* file, const void* buffer, unsigned int s
 		uint written = (uint)PHYSFS_write(fs_file, (const void*)buffer, 1, size);
 		if (written != size)
 		{
-			LOG("[error] File System error while writing to file %s: %s", file, PHYSFS_getLastError());
+			TTLOG("[error] File System error while writing to file %s: %s", file, PHYSFS_getLastError());
 		}
 		else
 		{
-			if (append == true) { LOG("Added %u data to [%s%s]", size, GetWriteDir(), file); }
-			else if (overwrite == true) { LOG("File [%s%s] overwritten with %u bytes", GetWriteDir(), file, size); }
-			else { LOG("New file created [%s%s] of %u bytes", GetWriteDir(), file, size); }
+			if (append == true) { TTLOG("Added %u data to [%s%s]", size, GetWriteDir(), file); }
+			else if (overwrite == true) { TTLOG("File [%s%s] overwritten with %u bytes", GetWriteDir(), file, size); }
+			else { TTLOG("New file created [%s%s] of %u bytes", GetWriteDir(), file, size); }
 
 			ret = written;
 		}
 
-		if (PHYSFS_close(fs_file) == 0) { LOG("[error] File System error while closing file %s: %s", file, PHYSFS_getLastError()); }
+		if (PHYSFS_close(fs_file) == 0) { TTLOG("[error] File System error while closing file %s: %s", file, PHYSFS_getLastError()); }
 	}
-	else { LOG("[error] File System error while opening file %s: %s", file, PHYSFS_getLastError()); }
+	else { TTLOG("[error] File System error while opening file %s: %s", file, PHYSFS_getLastError()); }
 
 	return ret;
 }
@@ -485,11 +488,11 @@ bool ModuleFileSystem::Remove(const char * file)
 		
 		if (PHYSFS_delete(file) != 0)
 		{
-			LOG("File deleted: [%s]", file);
+			TTLOG("File deleted: [%s]", file);
 			ret = true;
 		}
 		else
-			LOG("File System error while trying to delete [%s]: %s", file, PHYSFS_getLastError());
+			TTLOG("File System error while trying to delete [%s]: %s", file, PHYSFS_getLastError());
 	}
 
 	return ret;
@@ -503,7 +506,7 @@ uint64 ModuleFileSystem::GetLastModTime(const char* filename)
 */
 std::string ModuleFileSystem::GetUniqueName(const char* path, const char* name) const
 {
-	// TODO: modify to distinguix files and dirs?
+	//TODO: modify to distinguix files and dirs?
 	std::vector<std::string> files, dirs;
 	DiscoverFiles(path, files, dirs);
 
@@ -539,7 +542,7 @@ std::string ModuleFileSystem::GetUniqueName(const char* path, const char* name) 
 std::string ModuleFileSystem::SetNormalName(const char* path) {
 
 	std::string name(path);
-	std::string newName;
+	std::string new_name;
 	bool found = false;
 	for (size_t i = 0; i < name.size(); i++)
 	{
@@ -549,10 +552,10 @@ std::string ModuleFileSystem::SetNormalName(const char* path) {
 	}
 
 	if (found) {
-		newName = name.substr(name.find_last_of(0x5c) + 1);
+		new_name = name.substr(name.find_last_of(0x5c) + 1);
 	}
 	else {
-		newName = name.substr(name.find_last_of('/') + 1);
+		new_name = name.substr(name.find_last_of('/') + 1);
 	}
-	return newName;
+	return new_name;
 }

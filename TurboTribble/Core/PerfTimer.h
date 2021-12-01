@@ -1,7 +1,9 @@
-#ifndef __PERFTIMER_H__
-#define __PERFTIMER_H__
+#ifndef __PERF_TIMER_H__
+#define __PERF_TIMER_H__
 
 #include "p2Defs.h"
+
+
 
 class PerfTimer
 {
@@ -19,4 +21,4 @@ private:
 	static uint64 frequency;
 };
 
-#endif //__PERFTIMER_H__
+#endif // !__PERF_TIMER_H__

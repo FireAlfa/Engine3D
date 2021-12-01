@@ -5,6 +5,8 @@
 #include "p2Defs.h"
 #include "SDL\include\SDL.h"
 
+
+
 class Timer
 {
 public:
@@ -26,4 +28,4 @@ private:
 	Uint32	stoppedAt;
 };
 
-#endif //__TIMER_H__
+#endif // !__TIMER_H__

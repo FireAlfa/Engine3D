@@ -1,8 +1,13 @@
-#pragma once
+#ifndef __MODULE_VIEWPORT_FRAME_BUFFER_H__
+#define __MODULE_VIEWPORT_FRAME_BUFFER_H__
+
 #include "Module.h"
+
 #include "Globals.h"
 
 #include <string>
+
+
 
 class ModuleViewportFrameBuffer : public Module
 {
@@ -25,3 +30,5 @@ public:
 	bool showViewportWindow = true;
 
 };
+
+#endif // !__MODULE_VIEWPORT_FRAME_BUFFER_H__

@@ -1,9 +1,12 @@
-#ifndef _MODULE_H_
-#define _MODULE_H_
+#ifndef __MODULE_H__
+#define __MODULE_H__
+
 #include "Globals.h"
 
 #include "rapidjson-1.1.0/include/rapidjson/prettywriter.h"
 #include "rapidjson-1.1.0/include/rapidjson/document.h"
+
+
 
 class Application;
 
@@ -68,4 +71,4 @@ public:
 	virtual void OnGui() {}
 };
 
-#endif
+#endif // !__MODULE_H__

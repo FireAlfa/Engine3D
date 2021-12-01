@@ -1,10 +1,15 @@
-#pragma once
+#ifndef __MODULE_RENDERER_3D_H__
+#define __MODULE_RENDERER_3D_H__
+
 #include "Module.h"
+
 #include "Globals.h"
 #include "Light.h"
-
+#include "SDL/include/SDL.h"
 
 #define MAX_LIGHTS 8
+
+
 
 class ModuleRenderer3D : public Module
 {
@@ -39,3 +44,5 @@ public:
 	bool vsyncActive;
 
 };
+
+#endif // !__MODULE_RENDERER_3D_H__

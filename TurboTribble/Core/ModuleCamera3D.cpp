@@ -1,11 +1,15 @@
-#include "Globals.h"
-#include "Application.h"
 #include "ModuleCamera3D.h"
+
+#include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "GameObject.h"
+
+#include "Globals.h"
+
+
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
@@ -27,7 +31,7 @@ ModuleCamera3D::~ModuleCamera3D()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {
-	LOG("Setting up the camera");
+	TTLOG("Setting up the camera");
 
 	LookAt(float3::zero);
 
@@ -39,7 +43,7 @@ bool ModuleCamera3D::Start()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::CleanUp()
 {
-	LOG("Cleaning camera");
+	TTLOG("Cleaning camera");
 
 	return true;
 }

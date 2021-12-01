@@ -1,9 +1,14 @@
-#pragma once
+#ifndef __COMPONENT_H__
+#define __COMPONENT_H__
 
-// Tools
+#include "GameObject.h"
+
 #include <vector>
 #include <string>
-#include "GameObject.h"
+
+
+
+class Application;
 
 class Component {
 
@@ -30,3 +35,5 @@ public:
 	GameObject* owner = nullptr;
 	bool active = true;
 };
+
+#endif // !__COMPONENT_H__

@@ -1,11 +1,16 @@
-#pragma once
+#ifndef __MODULE_EDITOR_H__
+#define __MODULE_EDITOR_H__
+
 #include "Module.h"
+
 #include "Globals.h"
 
 #include "ImGui/imgui.h"
 #include <string>
 
-//Forward declaration
+
+
+// Forward declaration
 class GameObject;
 class ComponentTransform;
 
@@ -23,7 +28,6 @@ class ModuleEditor : public Module
 	Grid grid;
 
 public:
-
 	ModuleEditor(Application* app, bool startEnabled = true);
 	~ModuleEditor();
 
@@ -33,22 +37,22 @@ public:
 	UpdateStatus Update(float dt) override;
 	UpdateStatus PostUpdate(float dt) override;
 	bool CleanUp();
-	
+
 	void CreateGridBuffer();
 	void DrawGrid();
 
-	//Docking Helper functions
+	// Docking Helper functions
 	bool DockingRootItem(char* id, ImGuiWindowFlags winFlags);
 	void BeginDock(char* dockSpaceId, ImGuiDockNodeFlags dockFlags, ImVec2 size = { .0f, .0f });
 
-	//Core Update functions to show and manage windows
+	// Core Update functions to show and manage windows
 	void MenuBar();
 	void UpdateWindowStatus();
 
-	//Console Text Pushback
+	// Console Text Pushback
 	void UpdateText(const char* consoleText);
 
-	void AboutWindow();	//Can be done better
+	void AboutWindow();	// Can be done better
 	void InspectorGameObject();
 
 	//Window status control
@@ -74,3 +78,5 @@ public:
 	ImVec2 lastViewportSize;
 
 };
+
+#endif // !__MODULE_EDITOR_H__

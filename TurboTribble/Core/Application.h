@@ -1,11 +1,13 @@
-#ifndef _APPLICATION_
-#define _APPLICATION_
+#ifndef __APPLICATION_H__
+#define __APPLICATION_H__
 
 #include <vector>
 
-#include "Globals.h"
+//#include "Globals.h"
 #include "Timer.h"
 #include "PerfTimer.h"
+
+
 
 // Forward declarations
 
@@ -58,7 +60,7 @@ public:
 	void OnGui();
 
 
-	// Fps core
+	// FPS core
 	float				fps;
 	float				dt;
 	int					cap;
@@ -75,17 +77,19 @@ public:
 	std::vector<float> fpsLog;
 	std::vector<float> msLog;
 
-	// Engine configuration
+	//Engine configuration
 	bool closeEngine;
 	bool vsync;
 
 
 
 private: 
+
 	std::vector<Module*> modules;
 
 };
 
 extern Application* app;
 
-#endif //_APPLICATION_
+
+#endif // !__APPLICATION_H__
