@@ -1,20 +1,16 @@
 #pragma once
 #include "Component.h"
-
 #include "Globals.h"
-
 #include <string.h>
 #include "Math/float3.h"
 #include "Math/float2.h"
 #include "Geometry/AABB.h"
 #include "par_shapes.h"
 
-
-
 class ComponentMesh : public Component {
 
 public:
-
+	
 	enum class Shape
 	{
 		CUBE,
@@ -40,7 +36,7 @@ public:
 
 	uint vertexBufferId = 0, indexBufferId = 0, textureBufferId = 0;
 	std::string texturePath;
-
+	
 	uint numVertices = 0;
 	std::vector<float3> vertices;
 
@@ -58,14 +54,14 @@ public:
 	bool drawVertexNormals = false;
 	bool drawFaceNormals = false;
 	float normalScale = 1.f;
-
+	
 private:
 
-	//Bounding sphere
+	// Bounding sphere
 	float3 centerPoint = float3::zero;
 	float radius;
 
-	//Local coords AABB
+	// Local coords AABB
 	AABB localAABB;
-
+	
 };

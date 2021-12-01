@@ -1,14 +1,12 @@
-#ifndef __MODULE_FILE_SYSTEM_H__
-#define __MODULE_FILE_SYSTEM_H__
+#ifndef __MODULEFILESYSTEM_H__
+#define __MODULEFILESYSTEM_H__
 
 #include "Module.h"
 #include <vector>
 #include <string>
 
-
-
 struct SDL_RWops;
-int closeSDLRWops(SDL_RWops* rw);
+int close_sdl_rwops(SDL_RWops *rw);
 
 struct aiFileIO;
 

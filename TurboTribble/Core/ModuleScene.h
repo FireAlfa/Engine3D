@@ -1,14 +1,11 @@
-#ifndef __MODULE_SCENE_H__
-#define __MODULE_SCENE_H__
+#pragma once
 
+// Tools
 #include "Module.h"
-#include "ModuleImport.h"
-#include "GameObject.h"
-
 #include "Globals.h"
+#include "ModuleImport.h"
 
-
-
+#include "GameObject.h"
 class ModuleScene : public Module
 {
 public:
@@ -19,13 +16,10 @@ public:
 	UpdateStatus Update(float dt) override;
 	bool CleanUp() override;
 
-	GameObject* CreateGameObject(GameObject* parent = nullptr);
-	GameObject* CreateGameObject(const std::string name, GameObject* parent = nullptr);
-
+	GameObject* CreateGameObject(GameObject* parent = nullptr);	
+	GameObject* CreateGameObject(const std::string name, GameObject* parent = nullptr);	
+	
 public:
-
+	
 	GameObject* root;
 };
-
-
-#endif // !__MODULE_SCENE_H__

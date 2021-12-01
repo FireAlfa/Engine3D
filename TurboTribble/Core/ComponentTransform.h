@@ -1,12 +1,9 @@
 #pragma once
 
 #include "Component.h"
-
 #include "Math/float3.h"
 #include "Math/float4x4.h"
 #include "Math/Quat.h"
-
-
 
 class ComponentTransform : public Component {
 
@@ -33,12 +30,12 @@ public:
 	void OnParentMoved();
 
 	void RecomputeGlobalMatrix();
-
+	
 	float4x4 transformMatrix;
 	float4x4 transformMatrixLocal;
 
 private:
-
+	
 	bool isDirty = false;
 
 	float3 position;

@@ -1,19 +1,15 @@
-#include "ModuleRenderer3D.h"
-
+#include "Globals.h"
 #include "Application.h"
+#include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera3D.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 
-#include "Globals.h"
-
 #include "glew.h"
 #include "SDL/include/SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-
-
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
@@ -33,70 +29,70 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
-	TTLOG("Creating 3D Renderer context");
+	LOG("Creating 3D Renderer context");
 	bool ret = true;
 		
 	// Create context
 	context = SDL_GL_CreateContext(app->window->window);
 	if(context == NULL)
 	{
-		TTLOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
+		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 
 	GLenum err = glewInit();
 
-	TTLOG("Using Glew %s", glewGetString(GLEW_VERSION));
-	TTLOG("Vendor: %s", glGetString(GL_VENDOR));
-	TTLOG("Renderer: %s", glGetString(GL_RENDERER));
-	TTLOG("OpenGL version supported %s", glGetString(GL_VERSION));
-	TTLOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
+	LOG("Vendor: %s", glGetString(GL_VENDOR));
+	LOG("Renderer: %s", glGetString(GL_RENDERER));
+	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	
 
 	if(ret == true)
 	{
-		// Use Vsync
+		//Use Vsync
 		if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
-			TTLOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
-		// Initialize Projection Matrix
+		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 
-		// Check for error
+		//Check for error
 		GLenum error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			TTLOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 
-		// Initialize Modelview Matrix
+		//Initialize Modelview Matrix
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		// Check for error
+		//Check for error
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			TTLOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 		
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 		glClearDepth(1.0f);
 		
-		// Initialize clear color
+		//Initialize clear color
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 
-		// Initialize BlendFunc
+		//Initialize BlendFunc
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		// Check for error
+		//Check for error
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			TTLOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 		
@@ -150,7 +146,7 @@ UpdateStatus ModuleRenderer3D::PreUpdate(float dt)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Recalculate matrix -------------
+	// Recalculate matrix
 	app->camera->CalculateViewMatrix();
 
 	glMatrixMode(GL_PROJECTION);
@@ -178,7 +174,7 @@ UpdateStatus ModuleRenderer3D::PostUpdate(float dt)
 // Called before quitting
 bool ModuleRenderer3D::CleanUp()
 {
-	TTLOG("Destroying 3D Renderer");
+	LOG("Destroying 3D Renderer");
 
 	SDL_GL_DeleteContext(context);
 

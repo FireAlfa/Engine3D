@@ -3,8 +3,6 @@
 #include <vector>
 #include <string>
 
-
-
 class Component;
 class ComponentTransform;
 
@@ -49,9 +47,8 @@ public:
 	ComponentTransform* transform = nullptr;
 	std::vector<GameObject*> children;
 	std::vector<Component*> components;
-
+	
 	bool active = true;
 	bool isSelected = false;
 
 };
-

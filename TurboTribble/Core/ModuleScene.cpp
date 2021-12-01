@@ -1,21 +1,16 @@
-#include "ModuleScene.h"
-
+#include "Globals.h"
 #include "Application.h"
+#include "ModuleScene.h"
+#include "glew.h"
+#include "ImGui/imgui.h"
 #include "ModuleImport.h"
 #include "ModuleTextures.h"
 #include "ModuleCamera3D.h"
 #include "ModuleEditor.h"
 #include "Component.h"
 #include "ComponentTransform.h"
-
-#include "Globals.h"
-
-#include "glew.h"
-#include "ImGui/imgui.h"
 #include <stack>
 #include <queue>
-
-
 
 ModuleScene::ModuleScene(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
@@ -23,7 +18,7 @@ ModuleScene::ModuleScene(Application* app, bool startEnabled) : Module(app, star
 
 bool ModuleScene::Start()
 {
-	TTLOG("Loading Intro assets");
+	LOG("Loading Intro assets");
 	bool ret = true;
 	
 	root = new GameObject("Root");
@@ -36,20 +31,20 @@ bool ModuleScene::Start()
 
 bool ModuleScene::CleanUp()
 {
-	std::stack<GameObject*> S;
+	std::stack<GameObject*> s;
 	for (GameObject* child : root->children)	
 	{
-		S.push(child);
+		s.push(child);
 	}
 	root->children.clear();
 
-	while (!S.empty())
+	while (!s.empty())
 	{
-		GameObject* go = S.top();
-		S.pop();
+		GameObject* go = s.top();
+		s.pop();
 		for (GameObject* child : go->children)
 		{
-			S.push(child);
+			s.push(child);
 		}
 		go->children.clear();
 		delete go;
@@ -62,20 +57,20 @@ bool ModuleScene::CleanUp()
 
 UpdateStatus ModuleScene::Update(float dt)
 {
-	std::queue<GameObject*> S;
+	std::queue<GameObject*> s;
 	for (GameObject* child : root->children)
 	{
-		S.push(child);
+		s.push(child);
 	}
 
-	while (!S.empty())
+	while (!s.empty())
 	{
-		GameObject* go = S.front();
+		GameObject* go = s.front();
 		go->Update(dt);
-		S.pop();
+		s.pop();
 		for (GameObject* child : go->children)
 		{
-			S.push(child);
+			s.push(child);
 		}
 	}
 

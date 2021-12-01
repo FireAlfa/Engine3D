@@ -50,7 +50,7 @@ Application::Application()
 	// Renderer last!
 	AddModule(renderer3D);
 
-	//Control variable to close app
+	// Control variable to close app
 	closeEngine = false;
 	vsync = false;
 	fps = 0.0f;
@@ -83,7 +83,7 @@ bool Application::Init()
 	LoadEngineConfig();
 
 	// After all Init calls we call Start() in all modules
-	TTLOG("Application Start --------------");
+	LOG("Application Start --------------");
 	for (size_t i = 0; i < modules.size() && ret == true; i++)
 	{
 		ret = modules[i]->Start();
@@ -98,14 +98,14 @@ bool Application::Init()
 void Application::LoadEngineConfig()
 {
 	char* buffer = nullptr;
-	uint bytesFile = fileSystem->Load("engineConfig.cfg", &buffer);
+	uint bytesFile = app->fileSystem->Load("engineConfig.cfg", &buffer);
 
 	if (bytesFile)
 	{
 		rapidjson::Document document;
 		if (document.Parse<rapidjson::kParseStopWhenDoneFlag>(buffer).HasParseError())
 		{
-			TTLOG("Error loading engine config");
+			LOG("Error loading engine config");
 		}
 		else
 		{
@@ -116,7 +116,7 @@ void Application::LoadEngineConfig()
 				modules[i]->OnLoad(config);
 			}
 
-			TTLOG("Engine config loaded");
+			LOG("Engine config loaded");
 		}
 	}
 	RELEASE_ARRAY(buffer);
@@ -224,13 +224,13 @@ void Application::SaveEngineConfig()
 	}
 	writer.EndObject();
 
-	if (fileSystem->Save("engineConfig.cfg", sb.GetString(), strlen(sb.GetString()), false))
+	if (app->fileSystem->Save("engineConfig.cfg", sb.GetString(), strlen(sb.GetString()), false))
 	{
-		TTLOG("Engine configuration saved.");
+		LOG("Engine configuration saved.");
 	}
 	else
 	{
-		TTLOG("Engine configuration not saved.");
+		LOG("Engine configuration not saved.");
 	}
 }
 
@@ -264,9 +264,9 @@ void Application::DrawFPSDiagram() {
 	sprintf_s(title, 25, "Milliseconds %.1f", msLog[msLog.size() - 1]);
 	ImGui::PlotHistogram("##framerate", &msLog[0], msLog.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
 
-	if (ImGui::Checkbox("VSYNC:", &renderer3D->vsyncActive)) {
+	if (ImGui::Checkbox("VSYNC:", &app->renderer3D->vsyncActive)) {
 
-		if (renderer3D->vsyncActive)
+		if (app->renderer3D->vsyncActive)
 			SDL_GL_SetSwapInterval(1);
 		else
 			SDL_GL_SetSwapInterval(0);
@@ -274,7 +274,7 @@ void Application::DrawFPSDiagram() {
 	}
 
 	ImGui::SameLine();
-	if (renderer3D->vsyncActive)ImGui::TextColored(ImVec4(1, 1, 0, 1), "On");
+	if (app->renderer3D->vsyncActive)ImGui::TextColored(ImVec4(1, 1, 0, 1), "On");
 	else { ImGui::TextColored(ImVec4(1, 1, 0, 1), "Off"); }
 
 

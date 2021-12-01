@@ -1,9 +1,6 @@
-#ifndef __COMPONENT_MATERIAL_H__
-#define __COMPONENT_MATERIAL_H__
+#pragma once
 
 #include "Component.h"
-
-
 
 struct TextureObject;
 
@@ -22,5 +19,3 @@ private:
 	std::string textureName;
 	uint textureId = 0, width = 0, height = 0;
 };
-
-#endif // !__COMPONENT_MATERIAL_H__

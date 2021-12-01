@@ -1,10 +1,9 @@
-#include "ModuleTextures.h"
+#include "Globals.h"
 
 #include "Application.h"
+#include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
 #include "ModuleEditor.h"
-
-#include "Globals.h"
 
 #include "glew.h"
 // DevIL Image Library
@@ -85,20 +84,20 @@ bool ModuleTextures::Start()
 // Called before quitting
 bool ModuleTextures::CleanUp() // can be called to reset stored textures
 {
-	TTLOG("Cleaning Module Textures");
+	LOG("Cleaning Module Textures");
 	
 	for (auto& t : textures)
 		glDeleteTextures(1, &t.second.id);
 	
 	textures.clear();
-	TTLOG("Cleaning Module Textures. Done");
+	LOG("Cleaning Module Textures. Done");
 	return true;
 }
 
 // Load new texture from file path
 const TextureObject& ModuleTextures::Load(const std::string& path, bool useMipMaps)
 {
-	TTLOG("Loading texture -> %s", path.c_str());
+	LOG("Loading texture -> %s", path.c_str());
 
 	ILuint imageId;
 	ilGenImages(1, &imageId);
@@ -172,7 +171,7 @@ const TextureObject& ModuleTextures::Get(const std::string& path)
 	if (textureId != textures.end())
 		return (*textureId).second;
 
-	TTLOG("Error getting texture. Not found");
+	LOG("Error getting texture. Not found");
 	return textures["BLACK_FALLBACK"];
 }
 

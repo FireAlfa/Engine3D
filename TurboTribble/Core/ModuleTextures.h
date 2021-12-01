@@ -1,12 +1,8 @@
-#ifndef __MODULE_TEXTURES_H__
-#define __MODULE_TEXTURES_H__
-
-#include "Module.h"
+#pragma once
 
 #include <map>
 #include <string>
-
-
+#include "Module.h"
 
 struct TextureObject
 {
@@ -38,5 +34,3 @@ public:
 
 	std::map<const std::string, TextureObject> textures;
 };
-
-#endif // !__MODULE_TEXTURES_H__

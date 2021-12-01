@@ -1,10 +1,8 @@
-#ifndef __PATH_NODE_H__
-#define __PATH_NODE_H__
+#ifndef __PATHNODE_H__
+#define __PATHNODE_H__
 
 #include <string>
 #include <vector>
-
-
 
 struct PathNode
 {
@@ -52,4 +50,4 @@ struct PathNode
 
 };
 
-#endif // !__PATH_NODE_H__
+#endif

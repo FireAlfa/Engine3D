@@ -1,7 +1,8 @@
-#include "ModuleEditor.h"
+#include "Globals.h"
 
-//Modules
+// Modules
 #include "Application.h"
+#include "ModuleEditor.h"
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleInput.h"
@@ -14,9 +15,8 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 
-#include "Globals.h"
+// Tools
 
-//Tools
 #include <string>
 #include <stack>
 #include "ImGui/imgui_impl_opengl3.h"
@@ -24,8 +24,6 @@
 #include "ImGui/imgui_internal.h"
 #include "glew.h"
 #include <gl/GL.h>
-
-
 
 ModuleEditor::ModuleEditor(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
@@ -217,7 +215,7 @@ void ModuleEditor::DrawGrid()
     glBindVertexArray(0);
     
     glBegin(GL_LINES);
-        //x Axis
+        // x Axis
         glColor3f(1.f, 0.f, 0.f);
         glVertex3f(0.f, 0.0f, 0.f);
         glColor3f(1.f, 0.f, 0.f);
@@ -226,7 +224,7 @@ void ModuleEditor::DrawGrid()
         glVertex3f(0.f, 0.0f, 0.f);
         glColor3f(.2f, 0.f, 0.f);
         glVertex3f(-1000.f, 0.0f, 0.f);
-        //z Axis
+        // z Axis
         glColor3f(0.f, 0.f, 1.f);
         glVertex3f(0.f, 0.0f, 0.f);
         glColor3f(0.f, 0.f, 1.f);
@@ -330,9 +328,9 @@ void ModuleEditor::MenuBar() {
 
         /* ---- FILE ---- */
         if (ImGui::BeginMenu("File")) {
-            if (ImGui::MenuItem("Save", "Ctrl + S"))
+            if (ImGui::MenuItem("Save", "Ctrl + S")) //DO SOMETHING
             {
-                // DO SOMETHING
+
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Exit", "(Alt+F4)")) app->closeEngine = true;
@@ -490,22 +488,22 @@ void ModuleEditor::UpdateWindowStatus() {
         if (ImGui::Button("Clear", { 60,20 })) 
         {
             app->editor->gameobjectSelected = nullptr;
-            app->scene->CleanUp(); //Clean GameObjects 
+            app->scene->CleanUp(); // Clean GameObjects 
         }
         ImGui::SameLine();
         if (ImGui::Button("New", { 60,20 }))
         {
             app->scene->CreateGameObject();
         }
-        std::stack<GameObject*> S;
+        std::stack<GameObject*> s;
         std::stack<uint> indents;
-        S.push(app->scene->root);
+        s.push(app->scene->root);
         indents.push(0);
-        while (!S.empty())
+        while (!s.empty())
         {
-            GameObject* go = S.top();
+            GameObject* go = s.top();
             uint indentsAmount = indents.top();
-            S.pop();
+            s.pop();
             indents.pop();
 
             ImGuiTreeNodeFlags nodeFlags = 0;
@@ -548,16 +546,16 @@ void ModuleEditor::UpdateWindowStatus() {
                     gameobjectSelected->isSelected = !gameobjectSelected->isSelected;
                     if (gameobjectSelected->isSelected)
                     {
-                        TTLOG("GameObject selected name: %s", gameobjectSelected->name.c_str());
+                        LOG("GameObject selected name: %s", gameobjectSelected->name.c_str());
                     }
                     else
                     {
-                        TTLOG("GameObject unselected name: %s", gameobjectSelected->name.c_str());
+                        LOG("GameObject unselected name: %s", gameobjectSelected->name.c_str());
                     }
                 }
                 for (GameObject* child : go->children)
                 {
-                    S.push(child);
+                    s.push(child);
                     indents.push(indentsAmount + 1);
                 }
 

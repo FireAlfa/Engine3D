@@ -1,21 +1,16 @@
-#include "ModuleInput.h"
-
+#include "Globals.h"
 #include "Application.h"
+#include "ModuleInput.h"
 #include "ModuleImport.h"
+#include "GameObject.h"
 #include "ModuleTextures.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
-#include "GameObject.h"
 #include "ComponentMaterial.h"
-
-#include "Globals.h"
-
 #include "ImGui/imgui_impl_sdl.h"
 
 #define MAX_KEYS 300
-
-
 
 ModuleInput::ModuleInput(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
@@ -33,13 +28,13 @@ ModuleInput::~ModuleInput()
 // Called before render is available
 bool ModuleInput::Init()
 {
-	TTLOG("Init SDL input event system");
+	LOG("Init SDL input event system");
 	bool ret = true;
 	SDL_Init(0);
 
 	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
-		TTLOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 
@@ -138,12 +133,12 @@ UpdateStatus ModuleInput::PreUpdate(float dt)
 				std::string fileName(filePath);
 				if (fileName.substr(fileName.find_last_of(".")) == ".fbx" || fileName.substr(fileName.find_last_of(".")) == ".FBX" || fileName.substr(fileName.find_last_of(".")) == ".OBJ" || fileName.substr(fileName.find_last_of(".")) == ".obj")
 				{
-					TTLOG("Path of file dropped will be %s", filePath);
+					LOG("Path of file dropped will be %s", filePath);
 					app->import->LoadGeometry(filePath);
 				}
 				else if (fileName.substr(fileName.find_last_of(".")) == ".jpg" || fileName.substr(fileName.find_last_of(".")) == ".png" || fileName.substr(fileName.find_last_of(".")) == ".PNG" || fileName.substr(fileName.find_last_of(".")) == ".JPG")
 				{
-					TTLOG("Path of file dropped will be %s", filePath);
+					LOG("Path of file dropped will be %s", filePath);
 					std::string realFileName = fileName.substr(fileName.find_last_of("\\") + 1); 					
 					if (app->textures->Find(realFileName))
 					{
@@ -185,7 +180,7 @@ UpdateStatus ModuleInput::PreUpdate(float dt)
 // Called before quitting
 bool ModuleInput::CleanUp()
 {
-	TTLOG("Quitting SDL input event subsystem");
+	LOG("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }

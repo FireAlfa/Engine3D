@@ -1,11 +1,8 @@
-#ifndef __MODULE_WINDOW_H__
-#define __MODULE_WINDOW_H__
+#ifndef __ModuleWindow_H__
+#define __ModuleWindow_H__
 
 #include "Module.h"
-
 #include "SDL/include/SDL.h"
-
-
 
 class Application;
 
@@ -45,11 +42,11 @@ public:
 	bool resizable = true;
 	bool fullscreen = false;
 	bool borderless = true;
-	bool fullDesktop = true;
+	bool fulldesktop = true;
 
 	// Aspect Ratio
 	float windowAspectRatio;
 
 };
 
-#endif // !__MODULE_WINDOW_H__
+#endif // __ModuleWindow_H__

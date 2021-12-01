@@ -1,6 +1,7 @@
-#include "ModuleImport.h"
+#include "Globals.h"
 
 #include "Application.h"
+#include "ModuleImport.h"
 #include "ModuleWindow.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
@@ -9,21 +10,19 @@
 #include "ComponentMaterial.h"
 #include "GameObject.h"
 
-#include "Globals.h"
-
 #include <vector>
 #include <queue>
 #include "SDL/include/SDL_opengl.h"
 #include "Math/float2.h"
-// Assimp
+
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/mesh.h"
 
 
-
 ModuleImport::ModuleImport(Application* app, bool startEnabled) : Module(app, startEnabled) {}
+
 
 // Called before render is available
 bool ModuleImport::Init()
@@ -47,7 +46,7 @@ bool ModuleImport::LoadGeometry(const char* path) {
 
 	// Own structure	
 	GameObject* root = nullptr;
-	std::string new_root_name(path);
+	std::string newRootName(path);
 
 	// Assimp stuff
 	aiMesh* assimpMesh = nullptr;
@@ -112,7 +111,7 @@ bool ModuleImport::LoadGeometry(const char* path) {
 			mesh->vertices.resize(assimpMesh->mNumVertices);
 			
 			memcpy(&mesh->vertices[0], assimpMesh->mVertices, sizeof(float3) * assimpMesh->mNumVertices);
-			TTLOG("New mesh with %d vertices", assimpMesh->mNumVertices);
+			LOG("New mesh with %d vertices", assimpMesh->mNumVertices);
 
 			// Copying faces
 			if (assimpMesh->HasFaces()) {
@@ -122,7 +121,7 @@ bool ModuleImport::LoadGeometry(const char* path) {
 				for (size_t i = 0; i < assimpMesh->mNumFaces; i++)
 				{
 					if (assimpMesh->mFaces[i].mNumIndices != 3) {
-						TTLOG("WARNING, geometry face with != 3 indices!")
+						LOG("WARNING, geometry face with != 3 indices!")
 					}
 					else {
 						memcpy(&mesh->indices[i * 3], assimpMesh->mFaces[i].mIndices, 3 * sizeof(uint));
@@ -156,7 +155,7 @@ bool ModuleImport::LoadGeometry(const char* path) {
 
 	}
 	else 
-		TTLOG("Error loading scene %s", path);
+		LOG("Error loading scene %s", path);
 
 	RELEASE_ARRAY(buffer);
 
@@ -166,12 +165,12 @@ bool ModuleImport::LoadGeometry(const char* path) {
 void ModuleImport::FindNodeName(const aiScene* scene, const size_t i, std::string& name)
 {
 	bool nameFound = false;
-	std::queue<aiNode*> Q;
-	Q.push(scene->mRootNode);
-	while (!Q.empty() && !nameFound)
+	std::queue<aiNode*> q;
+	q.push(scene->mRootNode);
+	while (!q.empty() && !nameFound)
 	{
-		aiNode* node = Q.front();
-		Q.pop();
+		aiNode* node = q.front();
+		q.pop();
 		for (size_t j = 0; j < node->mNumMeshes; ++j)
 		{
 			if (node->mMeshes[j] == i)
@@ -184,7 +183,7 @@ void ModuleImport::FindNodeName(const aiScene* scene, const size_t i, std::strin
 		{
 			for (size_t j = 0; j < node->mNumChildren; ++j)
 			{
-				Q.push(node->mChildren[j]);
+				q.push(node->mChildren[j]);
 			}
 		}
 	}

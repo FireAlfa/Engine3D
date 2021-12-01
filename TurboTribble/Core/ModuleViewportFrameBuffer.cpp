@@ -1,17 +1,12 @@
-#include "ModuleViewportFrameBuffer.h"
-
 #include "Application.h"
-#include "ModuleWindow.h"
-
+#include "ModuleViewportFrameBuffer.h"
 #include "Globals.h"
-
+#include "ModuleWindow.h"
 #include <string>
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_internal.h"
 #include "glew.h"
 #include <gl/GL.h>
-
-
 
 ModuleViewportFrameBuffer::ModuleViewportFrameBuffer(Application* app, bool startEnabled) : Module(app, startEnabled){
 
@@ -38,19 +33,19 @@ bool ModuleViewportFrameBuffer::Start() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture
+	glBindTexture(GL_TEXTURE_2D, 0); //Unbind texture
 
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
-	// Render Buffers
+	//Render Buffers
 	glGenRenderbuffers(1, &renderBufferoutput);
 	glBindRenderbuffer(GL_RENDERBUFFER, renderBufferoutput);
 
-	// Bind tex data with render buffers
+	//Bind tex data with render buffers
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, app->window->width, app->window->height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBufferoutput);
 
-	// After binding tex data, we must unbind renderbuffer and framebuffer not usefull anymore
+	//After binding tex data, we must unbind renderbuffer and framebuffer not usefull anymore
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
