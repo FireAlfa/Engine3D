@@ -586,19 +586,20 @@ void ModuleEditor::UpdateWindowStatus()
 
     if (showSceneWindow) {
 
-        ImGui::Begin("Scene", &showSceneWindow, ImGuiWindowFlags_NoScrollbar);
+        ImGui::Begin("Scene", &showSceneWindow, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
-        ImVec2 viewportSize = ImGui::GetCurrentWindow()->Size;
-        if (viewportSize.x != lastViewportSize.x || viewportSize.y != lastViewportSize.y)
+        ImVec2 viewPortSize = ImGui::GetCurrentWindow()->Size;
+        ImVec2 viewPortRegion = ImVec2(ImGui::GetWindowContentRegionMax().x - 10, ImGui::GetWindowContentRegionMax().y - 30);
+        if (viewPortSize.x != lastViewportSize.x || viewPortSize.y != lastViewportSize.y)
         {
-            app->camera->aspectRatio = viewportSize.x / viewportSize.y;
+            app->camera->aspectRatio = viewPortRegion.x / viewPortRegion.y;
             app->camera->RecalculateProjection();
         }
-        lastViewportSize = viewportSize;
-        ImGui::Image((ImTextureID)app->viewportBuffer->texture, viewportSize, ImVec2(0, 1), ImVec2(1, 0));
+
+        lastViewportSize = viewPortRegion;
+        ImGui::Image((ImTextureID)app->viewportBuffer->texture, viewPortRegion, ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }
-    
 }
 
 void ModuleEditor::InspectorGameObject() 
