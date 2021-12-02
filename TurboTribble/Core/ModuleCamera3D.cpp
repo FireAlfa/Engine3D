@@ -31,7 +31,7 @@ ModuleCamera3D::~ModuleCamera3D()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {
-	TTLOG("Setting up the camera");
+	TTLOG("+++++ Setting up the Camera Module +++++");
 
 	LookAt(float3::zero);
 
@@ -43,7 +43,7 @@ bool ModuleCamera3D::Start()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::CleanUp()
 {
-	TTLOG("Cleaning camera");
+	TTLOG("+++++ Cleaning camera +++++");
 
 	return true;
 }

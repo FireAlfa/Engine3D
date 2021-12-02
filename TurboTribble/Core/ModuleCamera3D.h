@@ -15,34 +15,55 @@ class ModuleCamera3D : public Module
 {
 public:
 
+	// Constructor
 	ModuleCamera3D(Application* app, bool startEnabled = true);
+	// Destructor
 	~ModuleCamera3D();
 
+	// Start
 	bool Start() override;
+	// Update
 	UpdateStatus Update(float dt)override;
+	// CleanUp
 	bool CleanUp() override;
 
+
+	// Look at a given spot
 	void LookAt(const float3& point);
-	void CalculateViewMatrix();
-	void RecalculateProjection();
+
 	void OnGui() override;
 	void OnSave(JSONWriter& writer) const override;
 	void OnLoad(const JSONReader& reader) override;
 
-	float3 right, up, front, position, reference;
+	// Recalculate Projection
+	void RecalculateProjection();
+
+	// Calculate View Matrix
+	void CalculateViewMatrix();
+
+public:
+
+	// ----- Camera Variables -----
+
+	float aspectRatio = 1.f;
 	Frustum cameraFrustum;
 	float4x4 viewMatrix;
-	float aspectRatio = 1.f;
+	float3 position;
+	// ----------------------------
+
+private:
+
+	// ----- Camera Variables -----
+	
+	float3 right, up, front, reference;
 	float verticalFOV = 60.f;
 	float nearPlaneDistance = 0.1f;
 	float farPlaneDistance = 5000.f;
 	float cameraSensitivity = .5f;
 	float cameraSpeed = 60.f;
 	bool projectionIsDirty = false;
-
-private:
-
 	float lastDeltaX = 0.f, lastDeltaY = 0.f;
+	// ----------------------------
 
 };
 
