@@ -11,15 +11,22 @@
 #include "DevIL\include\ilu.h"
 #include "DevIL\include\ilut.h"
 
-
 #define CHECKERS_HEIGHT 64
 #define CHECKERS_WIDTH 64
+
+
 
 ModuleTextures::ModuleTextures(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
 	ilInit();
 	iluInit();
 	ilutInit();
+}
+
+bool ModuleTextures::Init()
+{
+	TTLOG("+++++ Loading Textures Module +++++\n");
+	return true;
 }
 
 bool ModuleTextures::Start()
@@ -85,20 +92,19 @@ bool ModuleTextures::Start()
 // Called before quitting
 bool ModuleTextures::CleanUp() // can be called to reset stored textures
 {
-	TTLOG("Cleaning Module Textures");
+	TTLOG("+++++ Quitting Textures Module +++++\n");
 	
 	for (auto& t : textures)
 		glDeleteTextures(1, &t.second.id);
 	
 	textures.clear();
-	TTLOG("Cleaning Module Textures. Done");
 	return true;
 }
 
 // Load new texture from file path
 const TextureObject& ModuleTextures::Load(const std::string& path, bool useMipMaps)
 {
-	TTLOG("Loading texture -> %s", path.c_str());
+	TTLOG("+++ Loading texture -> %s +++\n", path.c_str());
 
 	ILuint imageId;
 	ilGenImages(1, &imageId);
@@ -166,13 +172,14 @@ const TextureObject& ModuleTextures::Load(const std::string& path, bool useMipMa
 	}
 	return textures["BLACK_FALLBACK"];
 }
+
 const TextureObject& ModuleTextures::Get(const std::string& path)
 {
 	const auto textureId = textures.find(path);
 	if (textureId != textures.end())
 		return (*textureId).second;
 
-	TTLOG("Error getting texture. Not found");
+	TTLOG("### Error getting texture. Not found ###\n");
 	return textures["BLACK_FALLBACK"];
 }
 

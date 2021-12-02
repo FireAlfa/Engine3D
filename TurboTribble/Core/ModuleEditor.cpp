@@ -53,10 +53,10 @@ ModuleEditor::~ModuleEditor()
 {
 }
 
-bool ModuleEditor::Init() {
-    bool ret = true;
-
-    return ret;
+bool ModuleEditor::Init()
+{
+    TTLOG("+++++ Loading Editor Module +++++\n");
+    return true;
 }
 
 // Called before render is available
@@ -86,7 +86,8 @@ bool ModuleEditor::Start()
     return ret;
 }
 
-UpdateStatus ModuleEditor::PreUpdate(float dt) {
+UpdateStatus ModuleEditor::PreUpdate(float dt)
+{
 
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
@@ -113,7 +114,8 @@ UpdateStatus ModuleEditor::Update(float dt)
     return UpdateStatus::UPDATE_CONTINUE;
 }
 
-UpdateStatus ModuleEditor::PostUpdate(float dt) {
+UpdateStatus ModuleEditor::PostUpdate(float dt)
+{
 
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
@@ -142,6 +144,7 @@ UpdateStatus ModuleEditor::PostUpdate(float dt) {
 // Called before quitting
 bool ModuleEditor::CleanUp()
 {
+    TTLOG("+++++ Quitting Editor Module +++++\n");
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -242,7 +245,8 @@ void ModuleEditor::DrawGrid()
 
 }
 
-void ModuleEditor::AboutWindow() {
+void ModuleEditor::AboutWindow()
+{
 
     ImGui::Begin("About 3D Engine", &showAboutWindow);
 
@@ -283,7 +287,8 @@ void ModuleEditor::AboutWindow() {
 
 }
 
-void ModuleEditor::UpdateText(const char* text) {
+void ModuleEditor::UpdateText(const char* text)
+{
     consoleText.appendf(text);
 }
 
@@ -323,9 +328,10 @@ void ModuleEditor::BeginDock(char* dockSpaceId, ImGuiDockNodeFlags dockFlags, Im
     }
 }
 
-void ModuleEditor::MenuBar() {
+void ModuleEditor::MenuBar()
+{
 
-    /* ---- MAIN MENU BAR DOCKED ----*/
+    /* ---- MAIN MENU BAR DOCKED ---- */
     if (ImGui::BeginMainMenuBar()) {
 
         /* ---- FILE ---- */
@@ -365,7 +371,7 @@ void ModuleEditor::MenuBar() {
         }
 
 
-        /* ---- WINDOW ----*/
+        /* ---- WINDOW ---- */
         if (ImGui::BeginMenu("Window")) {
 
             if (ImGui::MenuItem("Examples")) showDemoWindow = !showDemoWindow;
@@ -405,7 +411,7 @@ void ModuleEditor::MenuBar() {
             ImGui::EndMenu();
         }
 
-        /* ---- HELP ----*/
+        /* ---- HELP ---- */
         if (ImGui::BeginMenu("Help")) {
             if (ImGui::MenuItem("About")) 
                 showAboutWindow = !showAboutWindow;
@@ -417,7 +423,8 @@ void ModuleEditor::MenuBar() {
     ImGui::EndMainMenuBar();
 }
 
-void ModuleEditor::UpdateWindowStatus() {
+void ModuleEditor::UpdateWindowStatus()
+{
 
     // Demo
     if (showDemoWindow) 
@@ -548,11 +555,11 @@ void ModuleEditor::UpdateWindowStatus() {
                     gameobjectSelected->isSelected = !gameobjectSelected->isSelected;
                     if (gameobjectSelected->isSelected)
                     {
-                        TTLOG("GameObject selected name: %s", gameobjectSelected->name.c_str());
+                        TTLOG("+++ GameObject selected name: %s +++\n", gameobjectSelected->name.c_str());
                     }
                     else
                     {
-                        TTLOG("GameObject unselected name: %s", gameobjectSelected->name.c_str());
+                        TTLOG("+++ GameObject unselected name: %s +++\n", gameobjectSelected->name.c_str());
                     }
                 }
                 for (GameObject* child : go->children)

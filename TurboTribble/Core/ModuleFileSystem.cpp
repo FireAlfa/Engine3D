@@ -38,14 +38,14 @@ ModuleFileSystem::~ModuleFileSystem()
 // Called before render is available
 bool ModuleFileSystem::Init()
 {
-	TTLOG("+++++ Loading File System Module +++++");
+	TTLOG("+++++ Loading File System Module +++++\n");
 	bool ret = true;
 	
 	// Setting the working directory as the writing directory
 	if (PHYSFS_setWriteDir(".") == 0) { TTLOG("##### File System error while creating write dir: %s #####\n", PHYSFS_getLastError()); }
 	if (PHYSFS_init(nullptr) == 0) {
 
-		TTLOG("+++++ PhysFS succesfully loaded | Libs initialized +++++");
+		TTLOG("+++ PhysFS succesfully loaded | Libs initialized +++\n");
 
 	}
 
@@ -58,7 +58,7 @@ bool ModuleFileSystem::Init()
 // Called before quitting
 bool ModuleFileSystem::CleanUp()
 {
-	TTLOG("+++++ Freeing File System subsystem +++++");
+	TTLOG("+++++ Quitting File System Module +++++\n");
 
 	return true;
 }
@@ -69,12 +69,12 @@ bool ModuleFileSystem::Read(const std::string& path, void* data, unsigned size) 
 	PHYSFS_ErrorCode errorCode = PHYSFS_getLastErrorCode();
 	if (errorCode == PHYSFS_ERR_BAD_FILENAME) // possibly it's from outside the filesystem -> read as C
 	{
-		TTLOG("+++++ Reading outside filesystem. +++++");
+		TTLOG("+++ Reading outside filesystem. +++\n");
 		FILE* file = nullptr;
 		fopen_s(&file, path.c_str(), "rb");
 		if (file == nullptr)
 		{
-			TTLOG("##### Impossible to read %s #####", path.c_str());
+			TTLOG("### Impossible to read %s ###\n", path.c_str());
 			return 0;
 		}
 		fread_s(data, size, 1, size, file);
@@ -85,7 +85,7 @@ bool ModuleFileSystem::Read(const std::string& path, void* data, unsigned size) 
 	{
 		if (file == nullptr)
 		{
-			TTLOG("##### Error reading %s -> %s #####", path.c_str(), PHYSFS_getErrorByCode(errorCode));
+			TTLOG("### Error reading %s -> %s ###\n", path.c_str(), PHYSFS_getErrorByCode(errorCode));
 			return false;
 		}
 
@@ -110,12 +110,12 @@ unsigned ModuleFileSystem::Size(const std::string& path) const
 	PHYSFS_ErrorCode errorCode = PHYSFS_getLastErrorCode();
 	if (errorCode == PHYSFS_ERR_BAD_FILENAME) // possibly it's from outside the filesystem -> read as C
 	{
-		TTLOG("+++++ Reading outside filesystem. +++++");
+		TTLOG("+++++ Reading outside filesystem. +++++\n");
 		FILE* file = nullptr;
 		fopen_s(&file, path.c_str(), "rb");
 		if (file == nullptr)
 		{
-			TTLOG("##### Impossible to read %s #####", path.c_str());
+			TTLOG("##### Impossible to read %s #####\n", path.c_str());
 			return 0;
 		}
 		fseek(file, 0L, SEEK_END);
@@ -123,7 +123,7 @@ unsigned ModuleFileSystem::Size(const std::string& path) const
 	}
 	if (file == nullptr)
 	{
-		TTLOG("##### Error reading %s -> %s #####", path.c_str(), PHYSFS_getErrorByCode(errorCode));
+		TTLOG("##### Error reading %s -> %s #####\n", path.c_str(), PHYSFS_getErrorByCode(errorCode));
 		return 0;
 	}
 	return PHYSFS_fileLength(file);
@@ -141,7 +141,7 @@ bool ModuleFileSystem::AddPath(const char* pathOrZip)
 	bool ret = false;
 
 	if (PHYSFS_mount(pathOrZip, nullptr, 1) == 0)
-		TTLOG("##### File System error while adding a path or zip: %s #####\n", PHYSFS_getLastError())
+		TTLOG("### File System error while adding a path or zip: %s ###\n", PHYSFS_getLastError())
 	else
 		ret = true;
 
@@ -386,10 +386,10 @@ uint ModuleFileSystem::Load(const char* file, char** buffer) const
 		}
 
 		if (PHYSFS_close(fs_file) == 0)
-			TTLOG("##### File System error while closing file %s: %s #####\n", file, PHYSFS_getLastError());
+			TTLOG("### File System error while closing file %s: %s ###\n", file, PHYSFS_getLastError());
 	}
 	else
-		TTLOG("##### File System error while opening file %s: %s #####\n", file, PHYSFS_getLastError());
+		TTLOG("### File System error while opening file %s: %s ###\n", file, PHYSFS_getLastError());
 
 	return ret;
 }
@@ -422,12 +422,12 @@ bool ModuleFileSystem::DuplicateFile(const char* srcFile, const char* dstFile)
 
 	if (srcOpen && dstOpen)
 	{
-		TTLOG("+++++ [success] File Duplicated Correctly +++++");
+		TTLOG("+++ [success] File Duplicated Correctly +++\n");
 		return true;
 	}
 	else
 	{
-		TTLOG("##### [error] File could not be duplicated #####");
+		TTLOG("### [error] File could not be duplicated ###\n");
 		return false;
 	}
 }
@@ -452,20 +452,20 @@ uint ModuleFileSystem::Save(const char* file, const void* buffer, unsigned int s
 		uint written = (uint)PHYSFS_write(fs_file, (const void*)buffer, 1, size);
 		if (written != size)
 		{
-			TTLOG("##### [error] File System error while writing to file %s: %s #####", file, PHYSFS_getLastError());
+			TTLOG("### [error] File System error while writing to file %s: %s ###\n", file, PHYSFS_getLastError());
 		}
 		else
 		{
-			if (append == true) { TTLOG("+++++ Added %u data to [%s%s] +++++", size, GetWriteDir(), file); }
-			else if (overwrite == true) { TTLOG("+++++ File [%s%s] overwritten with %u bytes +++++", GetWriteDir(), file, size); }
-			else { TTLOG("+++++ New file created [%s%s] of %u bytes +++++", GetWriteDir(), file, size); }
+			if (append == true) { TTLOG("+++ Added %u data to [%s%s] +++\n", size, GetWriteDir(), file); }
+			else if (overwrite == true) { TTLOG("+++ File [%s%s] overwritten with %u bytes +++\n", GetWriteDir(), file, size); }
+			else { TTLOG("+++ New file created [%s%s] of %u bytes +++\n", GetWriteDir(), file, size); }
 
 			ret = written;
 		}
 
-		if (PHYSFS_close(fs_file) == 0) { TTLOG("##### [error] File System error while closing file %s: %s #####", file, PHYSFS_getLastError()); }
+		if (PHYSFS_close(fs_file) == 0) { TTLOG("### [error] File System error while closing file %s: %s ###\n", file, PHYSFS_getLastError()); }
 	}
-	else { TTLOG("##### [error] File System error while opening file %s: %s #####", file, PHYSFS_getLastError()); }
+	else { TTLOG("### [error] File System error while opening file %s: %s ###\n", file, PHYSFS_getLastError()); }
 
 	return ret;
 }
@@ -488,11 +488,11 @@ bool ModuleFileSystem::Remove(const char * file)
 		
 		if (PHYSFS_delete(file) != 0)
 		{
-			TTLOG("File deleted: [%s]", file);
+			TTLOG("File deleted: [%s]\n", file);
 			ret = true;
 		}
 		else
-			TTLOG("File System error while trying to delete [%s]: %s", file, PHYSFS_getLastError());
+			TTLOG("File System error while trying to delete [%s]: %s\n", file, PHYSFS_getLastError());
 	}
 
 	return ret;
@@ -539,7 +539,8 @@ std::string ModuleFileSystem::GetUniqueName(const char* path, const char* name) 
 	return finalName;
 }
 
-std::string ModuleFileSystem::SetNormalName(const char* path) {
+std::string ModuleFileSystem::SetNormalName(const char* path)
+{
 
 	std::string name(path);
 	std::string new_name;

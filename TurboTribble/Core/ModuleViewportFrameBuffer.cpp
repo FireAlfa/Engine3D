@@ -21,13 +21,14 @@ ModuleViewportFrameBuffer::ModuleViewportFrameBuffer(Application* app, bool star
 ModuleViewportFrameBuffer::~ModuleViewportFrameBuffer()
 {}
 
-bool  ModuleViewportFrameBuffer::Init() {
+bool ModuleViewportFrameBuffer::Init()
+{
+	TTLOG("+++++ Loading Viewport Frame Buffer Module +++++\n");
 	return true;
 }
 
-bool ModuleViewportFrameBuffer::Start() {
-
-	bool ret = false;
+bool ModuleViewportFrameBuffer::Start()
+{
 	glGenFramebuffers(1, &frameBuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
@@ -58,9 +59,8 @@ bool ModuleViewportFrameBuffer::Start() {
 	return true;
 }
 
-UpdateStatus ModuleViewportFrameBuffer::PreUpdate(float dt) {
-
-	
+UpdateStatus ModuleViewportFrameBuffer::PreUpdate(float dt)
+{
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -68,16 +68,16 @@ UpdateStatus ModuleViewportFrameBuffer::PreUpdate(float dt) {
 	return UpdateStatus::UPDATE_CONTINUE;
 }
 
-
-UpdateStatus ModuleViewportFrameBuffer::PostUpdate(float dt) {
-
-	
+UpdateStatus ModuleViewportFrameBuffer::PostUpdate(float dt)
+{
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	
 	return UpdateStatus::UPDATE_CONTINUE;
 }
 
-bool ModuleViewportFrameBuffer::CleanUp() {
+bool ModuleViewportFrameBuffer::CleanUp()
+{
+	TTLOG("+++++ Quitting Viewport Frame Buffer Module +++++\n");
 
 	texture ? glDeleteTextures(1, &texture) : 0;
 	frameBuffer ? glDeleteFramebuffers(1, &frameBuffer) : 0;

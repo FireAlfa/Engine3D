@@ -28,6 +28,7 @@ ModuleImport::ModuleImport(Application* app, bool startEnabled) : Module(app, st
 // Called before render is available
 bool ModuleImport::Init()
 {
+	TTLOG("+++++ Loading Import Module +++++\n");
 	bool ret = true;
 
 	// Stream log messages to Debug window
@@ -38,12 +39,8 @@ bool ModuleImport::Init()
 	return ret;
 }
 
-UpdateStatus ModuleImport::Update(float dt) {
-
-	return UpdateStatus::UPDATE_CONTINUE;
-}
-
-bool ModuleImport::LoadGeometry(const char* path) {
+bool ModuleImport::LoadGeometry(const char* path)
+{
 
 	// Own structure	
 	GameObject* root = nullptr;
@@ -112,7 +109,7 @@ bool ModuleImport::LoadGeometry(const char* path) {
 			mesh->vertices.resize(assimpMesh->mNumVertices);
 			
 			memcpy(&mesh->vertices[0], assimpMesh->mVertices, sizeof(float3) * assimpMesh->mNumVertices);
-			TTLOG("New mesh with %d vertices", assimpMesh->mNumVertices);
+			TTLOG("+++ New mesh with %d vertices +++\n", assimpMesh->mNumVertices);
 
 			// Copying faces
 			if (assimpMesh->HasFaces()) {
@@ -122,7 +119,7 @@ bool ModuleImport::LoadGeometry(const char* path) {
 				for (size_t i = 0; i < assimpMesh->mNumFaces; i++)
 				{
 					if (assimpMesh->mFaces[i].mNumIndices != 3) {
-						TTLOG("WARNING, geometry face with != 3 indices!")
+						TTLOG("### WARNING, geometry face with != 3 indices! ###\n")
 					}
 					else {
 						memcpy(&mesh->indices[i * 3], assimpMesh->mFaces[i].mIndices, 3 * sizeof(uint));
@@ -156,7 +153,7 @@ bool ModuleImport::LoadGeometry(const char* path) {
 
 	}
 	else 
-		TTLOG("Error loading scene %s", path);
+		TTLOG("### Error loading scene %s ###\n", path);
 
 	RELEASE_ARRAY(buffer);
 
@@ -193,6 +190,8 @@ void ModuleImport::FindNodeName(const aiScene* scene, const size_t i, std::strin
 // Called before quitting
 bool ModuleImport::CleanUp()
 {
+	TTLOG("+++++ Quitting Import Module +++++\n");
+
 	// Detach log stream
 	aiDetachAllLogStreams();
 

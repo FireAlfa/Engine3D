@@ -33,13 +33,13 @@ ModuleInput::~ModuleInput()
 // Called before render is available
 bool ModuleInput::Init()
 {
-	TTLOG("Init SDL input event system");
+	TTLOG("+++++ Loading Input Module +++++\n");
 	bool ret = true;
 	SDL_Init(0);
 
 	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
-		TTLOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+		TTLOG("##### SDL_EVENTS could not initialize! SDL_Error: %s #####\n", SDL_GetError());
 		ret = false;
 	}
 
@@ -138,12 +138,12 @@ UpdateStatus ModuleInput::PreUpdate(float dt)
 				std::string fileName(filePath);
 				if (fileName.substr(fileName.find_last_of(".")) == ".fbx" || fileName.substr(fileName.find_last_of(".")) == ".FBX" || fileName.substr(fileName.find_last_of(".")) == ".OBJ" || fileName.substr(fileName.find_last_of(".")) == ".obj")
 				{
-					TTLOG("Path of file dropped will be %s", filePath);
+					TTLOG("~~~ Path of file dropped will be %s ~~~\n", filePath);
 					app->import->LoadGeometry(filePath);
 				}
 				else if (fileName.substr(fileName.find_last_of(".")) == ".jpg" || fileName.substr(fileName.find_last_of(".")) == ".png" || fileName.substr(fileName.find_last_of(".")) == ".PNG" || fileName.substr(fileName.find_last_of(".")) == ".JPG")
 				{
-					TTLOG("Path of file dropped will be %s", filePath);
+					TTLOG("~~~ Path of file dropped will be %s ~~~\n", filePath);
 					std::string realFileName = fileName.substr(fileName.find_last_of("\\") + 1); 					
 					if (app->textures->Find(realFileName))
 					{
@@ -154,7 +154,6 @@ UpdateStatus ModuleInput::PreUpdate(float dt)
 							{
 								material->SetTexture(texture);
 							}
-
 						}
 					}
 					else
@@ -166,7 +165,6 @@ UpdateStatus ModuleInput::PreUpdate(float dt)
 							{
 								material->SetTexture(texture);
 							}
-
 						}
 					}
 				}
@@ -185,12 +183,13 @@ UpdateStatus ModuleInput::PreUpdate(float dt)
 // Called before quitting
 bool ModuleInput::CleanUp()
 {
-	TTLOG("Quitting SDL input event subsystem");
+	TTLOG(" +++++ Quitting Input Module +++++\n");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
 
-void ModuleInput::OnGui() {	
+void ModuleInput::OnGui()
+{	
 	if (ImGui::CollapsingHeader("Input"))
 	{
 		ImGui::Text("Mouse Position");

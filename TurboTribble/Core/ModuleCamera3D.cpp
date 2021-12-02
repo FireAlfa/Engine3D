@@ -31,7 +31,7 @@ ModuleCamera3D::~ModuleCamera3D()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {
-	TTLOG("+++++ Setting up the Camera Module +++++");
+	TTLOG("+++++ Loading Camera Module +++++\n");
 
 	LookAt(float3::zero);
 
@@ -43,7 +43,7 @@ bool ModuleCamera3D::Start()
 // -----------------------------------------------------------------
 bool ModuleCamera3D::CleanUp()
 {
-	TTLOG("+++++ Cleaning camera +++++");
+	TTLOG("+++++ Quitting Camera Module +++++\n");
 
 	return true;
 }
@@ -51,7 +51,6 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 UpdateStatus ModuleCamera3D::Update(float dt)
 {
-
 	float3 newPos(0,0,0);
 	float speed = cameraSpeed * dt;
 	if(app->input->GetKey(SDL_SCANCODE_LSHIFT) == KeyState::KEY_REPEAT)

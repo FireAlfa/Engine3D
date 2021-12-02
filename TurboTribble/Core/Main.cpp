@@ -21,7 +21,7 @@ Application* app = NULL;
 
 int main(int argc, char** argv)
 {
-	TTLOG("~~~~~~~~~~ Starting %s Engine ~~~~~~~~~~", TITLE);
+	
 
 	int mainReturn = EXIT_FAILURE;
 	MainStates state = MainStates::MAIN_CREATION;
@@ -33,8 +33,9 @@ int main(int argc, char** argv)
 		{
 		case MainStates::MAIN_CREATION:
 		{
-			TTLOG("++++++++ Application Creation ++++++++");
 			app = new Application();
+			TTLOG("~~~~~~~~~~ Starting %s Engine ~~~~~~~~~~\n", TITLE);
+			TTLOG("++++++++ Application Creation ++++++++\n");
 			state = MainStates::MAIN_START;
 
 			break;
@@ -42,16 +43,16 @@ int main(int argc, char** argv)
 
 		case MainStates::MAIN_START:
 		{
-			TTLOG("++++++++ Application Init ++++++++");
+			TTLOG("++++++++ Application Init ++++++++\n");
 			if (app->Init() == false)
 			{
-				TTLOG("######## Application Init exits with ERROR ########");
+				TTLOG("######## Application Init exits with ERROR ########\n");
 				state = MainStates::MAIN_EXIT;
 			}
 			else
 			{
 				state = MainStates::MAIN_UPDATE;
-				TTLOG("++++++++ Application Update ++++++++");
+				TTLOG("++++++++ Application Update ++++++++\n");
 			}
 
 			break;
@@ -63,7 +64,7 @@ int main(int argc, char** argv)
 
 			if (updateReturn == UpdateStatus::UPDATE_ERROR)
 			{
-				TTLOG("######## Application Update exits with ERROR ########");
+				TTLOG("######## Application Update exits with ERROR ########\n");
 				state = MainStates::MAIN_EXIT;
 			}
 
@@ -75,10 +76,10 @@ int main(int argc, char** argv)
 
 		case MainStates::MAIN_FINISH:
 		{
-			TTLOG("++++++++ Application CleanUp ++++++++");
+			TTLOG("++++++++ Application CleanUp ++++++++\n");
 			if (app->CleanUp() == false)
 			{
-				TTLOG("######## Application CleanUp exits with ERROR ########");
+				TTLOG("######## Application CleanUp exits with ERROR ########\n");
 			}
 			else
 				mainReturn = EXIT_SUCCESS;

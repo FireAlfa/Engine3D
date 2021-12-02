@@ -21,9 +21,14 @@ ModuleScene::ModuleScene(Application* app, bool startEnabled) : Module(app, star
 {
 }
 
+bool ModuleScene::Init()
+{
+	TTLOG("+++++ Loading Scene Module +++++\n");
+	return true;
+}
+
 bool ModuleScene::Start()
 {
-	TTLOG("Loading Intro assets");
 	bool ret = true;
 	
 	root = new GameObject("Root");
@@ -36,6 +41,8 @@ bool ModuleScene::Start()
 
 bool ModuleScene::CleanUp()
 {
+	TTLOG("+++++ Quitting Scene Module +++++\n");
+
 	std::stack<GameObject*> s;
 	for (GameObject* child : root->children)	
 	{
@@ -105,7 +112,8 @@ UpdateStatus ModuleScene::Update(float dt)
 	return UpdateStatus::UPDATE_CONTINUE;
 }
 
-GameObject* ModuleScene::CreateGameObject(GameObject* parent) {
+GameObject* ModuleScene::CreateGameObject(GameObject* parent)
+{
 
 	GameObject* temp = new GameObject();
 	if (parent)

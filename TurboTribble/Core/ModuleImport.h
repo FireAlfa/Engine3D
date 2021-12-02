@@ -14,14 +14,18 @@ class ModuleImport : public Module
 {
 public:
 
+	// Constructor
 	ModuleImport(Application* app, bool startEnabled = true);
 
+	// Initialize the File Importer
 	bool Init() override;
-	UpdateStatus Update(float dt) override;
+	// Called before quitting
 	bool CleanUp() override;
 
-	bool LoadGeometry(const char* path);
 
+	// Load a Geometry from a given path
+	bool LoadGeometry(const char* path);
+	// Find nodw in given scene
 	void FindNodeName(const aiScene* scene, const size_t i, std::string& name);
 
 };

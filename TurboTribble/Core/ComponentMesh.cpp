@@ -89,7 +89,7 @@ void ComponentMesh::GenerateBuffers() {
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float2) * texCoords.size(), &texCoords[0], GL_STATIC_DRAW);
 	}
 	if (vertexBufferId == 0 || indexBufferId == 0)
-		TTLOG("Error creating mesh on gameobject %s", owner->name.c_str());
+		TTLOG("Error creating mesh on gameobject %s\n", owner->name.c_str());
 }
 
 void ComponentMesh::ComputeNormals()

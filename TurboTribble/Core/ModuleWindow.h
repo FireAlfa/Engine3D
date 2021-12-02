@@ -13,18 +13,26 @@ class ModuleWindow : public Module
 {
 public:
 
+	// Constructor
 	ModuleWindow(Application* app, bool startEnabled = true);
-
 	// Destructor
 	virtual ~ModuleWindow();
 
+	// Initialize the window, called before Render is available
 	bool Init() override;
+	// Set Window settings according to flags
 	bool Start() override;
+	// Called before quitting, destroys the window
 	bool CleanUp() override;
+
+	// Load Window Info
 	void OnLoad(const JSONReader& reader) override;
+	// Save Window Info
 	void OnSave(JSONWriter& writer) const override;
 
+	// Draw Camera Info
 	void OnGui() override;
+	// Change the Window's title
 	void SetTitle(const char* title);
 
 public:
@@ -37,7 +45,9 @@ public:
 
 	SDL_GLContext context;
 
-	// ImGui control variables
+
+	// ----- ImGui control variables -----
+	
 	Uint32 flags;
 	int width;
 	int height;
@@ -46,6 +56,8 @@ public:
 	bool fullscreen = false;
 	bool borderless = true;
 	bool fullDesktop = true;
+	// -----------------------------------
+	
 
 	// Aspect Ratio
 	float windowAspectRatio;

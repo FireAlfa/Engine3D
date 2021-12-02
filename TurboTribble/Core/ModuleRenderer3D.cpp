@@ -33,31 +33,31 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
-	TTLOG("Creating 3D Renderer context");
+	TTLOG("+++++ Loading Renderer Module +++++\n");
 	bool ret = true;
 		
 	// Create context
 	context = SDL_GL_CreateContext(app->window->window);
 	if(context == NULL)
 	{
-		TTLOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
+		TTLOG("##### OpenGL context could not be created! SDL_Error: %s #####\n", SDL_GetError());
 		ret = false;
 	}
 
 	GLenum err = glewInit();
 
-	TTLOG("Using Glew %s", glewGetString(GLEW_VERSION));
-	TTLOG("Vendor: %s", glGetString(GL_VENDOR));
-	TTLOG("Renderer: %s", glGetString(GL_RENDERER));
-	TTLOG("OpenGL version supported %s", glGetString(GL_VERSION));
-	TTLOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	TTLOG("+++ Using Glew %s +++\n", glewGetString(GLEW_VERSION));
+	TTLOG("+++ Vendor: %s +++\n", glGetString(GL_VENDOR));
+	TTLOG("+++ Renderer: %s +++\n", glGetString(GL_RENDERER));
+	TTLOG("+++ OpenGL version supported %s +++\n", glGetString(GL_VERSION));
+	TTLOG("+++ GLSL: %s +++\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	
 
 	if(ret == true)
 	{
 		// Use Vsync
 		if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
-			TTLOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+			TTLOG("##### Warning: Unable to set VSync! SDL Error: %s #####\n", SDL_GetError());
 
 		// Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
@@ -67,7 +67,7 @@ bool ModuleRenderer3D::Init()
 		GLenum error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			TTLOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			TTLOG("##### Error initializing OpenGL! %s #####\n", gluErrorString(error));
 			ret = false;
 		}
 
@@ -79,7 +79,7 @@ bool ModuleRenderer3D::Init()
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			TTLOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			TTLOG("##### Error initializing OpenGL! %s #####\n", gluErrorString(error));
 			ret = false;
 		}
 		
@@ -96,7 +96,7 @@ bool ModuleRenderer3D::Init()
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			TTLOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			TTLOG("##### Error initializing OpenGL! %s #####\n", gluErrorString(error));
 			ret = false;
 		}
 		
@@ -178,13 +178,12 @@ UpdateStatus ModuleRenderer3D::PostUpdate(float dt)
 // Called before quitting
 bool ModuleRenderer3D::CleanUp()
 {
-	TTLOG("Destroying 3D Renderer");
+	TTLOG("+++++ Quitting Renderer Module +++++\n");
 
 	SDL_GL_DeleteContext(context);
 
 	return true;
 }
-
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
@@ -192,7 +191,8 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	app->camera->RecalculateProjection();
 }
 
-void ModuleRenderer3D::OnGui() {
+void ModuleRenderer3D::OnGui()
+{
 	if (ImGui::CollapsingHeader("Render"))
 	{
 		ImGui::TextUnformatted("Render Options");
@@ -213,6 +213,7 @@ void ModuleRenderer3D::OnGui() {
 		}
 	}
 }
+
 void ModuleRenderer3D::OnLoad(const JSONReader& reader)
 {
 	if (reader.HasMember("render"))
@@ -239,7 +240,7 @@ void ModuleRenderer3D::OnSave(JSONWriter& writer) const
 	writer.EndObject();
 }
 
-
-void ModuleRenderer3D::DrawingModes(bool currentState, int glMode) {
+void ModuleRenderer3D::DrawingModes(bool currentState, int glMode)
+{
 	currentState ? glEnable(glMode) : glDisable(glMode);
 }

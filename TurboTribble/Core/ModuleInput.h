@@ -20,15 +20,24 @@ class ModuleInput : public Module
 {
 public:
 
+	// Constructor
 	ModuleInput(Application* app, bool startEnabled = true);
+	// Destructor
 	~ModuleInput();
 
+	// Initialize the input events subsystem
 	bool Init() override;
+	// Called every loop, before the logic and render are applied
 	UpdateStatus PreUpdate(float dt) override;
+	// Called before quitting
 	bool CleanUp() override;
 
+	// Draw Input info
 	void OnGui();
-	void ImGuiEventInput();
+	//void ImGuiEventInput();
+
+
+	// ----- Getters -----
 
 	KeyState GetKey(int id) const
 	{
@@ -64,9 +73,11 @@ public:
 	{
 		return mouseYMotion;
 	}
-
+	// -------------------
 
 private:
+
+	// ----- Input Variables -----
 
 	KeyState* keyboard;
 	KeyState mouseButtons[MAX_MOUSE_BUTTONS];
@@ -76,6 +87,7 @@ private:
 	int mouseXMotion;
 	int mouseYMotion;
 	int mouseZMotion;
+	// ---------------------------
 
 public:
 

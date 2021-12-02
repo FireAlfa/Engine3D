@@ -31,7 +31,7 @@ ModuleWindow::~ModuleWindow()
 // Called before render is available
 bool ModuleWindow::Init()
 {
-	TTLOG("+++++ Init Module Window +++++");
+	TTLOG("+++++ Loading Window Module +++++\n");
 	bool ret = true;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -127,7 +127,7 @@ bool ModuleWindow::Start()
 // Called before quitting
 bool ModuleWindow::CleanUp()
 {
-	TTLOG("+++++ Quitting Module Window and all SDL systems +++++");
+	TTLOG("+++++ Quitting Window Module and all SDL systems +++++\n");
 
 	// Destroy window
 	if(window != NULL)
@@ -168,7 +168,8 @@ void ModuleWindow::SetTitle(const char* title)
 	SDL_SetWindowTitle(window, title);
 }
 
-void ModuleWindow::OnGui() {
+void ModuleWindow::OnGui()
+{
 		
 	if (ImGui::CollapsingHeader("Window"))
 	{
