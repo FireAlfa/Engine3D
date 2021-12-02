@@ -98,7 +98,7 @@ bool Application::Init()
 void Application::LoadEngineConfig()
 {
 	char* buffer = nullptr;
-	uint bytesFile = fileSystem->Load("engineConfig.cfg", &buffer);
+	uint bytesFile = fileSystem->Load("engine_config.cfg", &buffer);
 
 	if (bytesFile)
 	{
@@ -224,7 +224,7 @@ void Application::SaveEngineConfig()
 	}
 	writer.EndObject();
 
-	if (fileSystem->Save("engineConfig.cfg", sb.GetString(), strlen(sb.GetString()), false))
+	if (fileSystem->Save("engine_config.cfg", sb.GetString(), strlen(sb.GetString()), false))
 	{
 		TTLOG("++++++++ Engine configuration saved. ++++++++\n");
 	}
