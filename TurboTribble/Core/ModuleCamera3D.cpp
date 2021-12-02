@@ -95,9 +95,9 @@ UpdateStatus ModuleCamera3D::Update(float dt)
 		newPos -= right * speed;
 
 	if (app->input->GetMouseZ() > 0) 
-		newPos += front * speed * 2;
+		newPos += front * speed * 4;
 	if (app->input->GetMouseZ() < 0) 
-		newPos -= front * speed * 2;
+		newPos -= front * speed * 4;
 
 	position += newPos;
 
